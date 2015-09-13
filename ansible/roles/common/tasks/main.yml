@@ -1,0 +1,50 @@
+- name: Install wget
+  yum: name=wget state=present
+  sudo: yes
+
+- name: Install Git
+  yum: name=git state=present
+  sudo: yes
+
+- name: Install Ack
+  yum: name=ack state=present
+  sudo: yes
+
+- name: Install Tmux
+  yum: name=tmux state=present
+  sudo: yes
+
+- name: Install Devtools
+  yum: name="@Development Tools" state=present
+  sudo: yes
+
+- name: Install Remis Repo
+  yum: name=http://rpms.remirepo.net/enterprise/remi-release-6.rpm state=present
+  sudo: yes
+
+- name: Install EPEL Repo
+  yum: name=https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm state=present
+  sudo: yes
+
+- name: Update System
+  yum: name=* state=latest enablerepo=*
+  sudo: yes
+
+- name: Is /usr/local/bin in sudo path already?
+  shell: cat /etc/sudoers | grep secure_path | grep '/usr/local/bin'
+  sudo: yes
+  register: local_bin_check
+  ignore_errors: yes
+  changed_when: False
+
+- name: Add /usr/local/bin to sudo path
+  shell: cat /etc/sudoers | sed 's~\(.*secure_path = .*\)~\1:/usr/local/bin~' | tee /tmp/sudoers
+  sudo: yes
+  register: sudoers_edit
+  failed_when: sudoers_edit.stdout == ""
+  when: local_bin_check.stdout == "" and local_bin_check.stderr == ""
+
+- name: Overwrite current sudoers if that command had output
+  sudo: yes
+  shell: sudo mv /tmp/sudoers /etc/sudoers
+  when: local_bin_check.stdout == "" and local_bin_check.stderr == ""

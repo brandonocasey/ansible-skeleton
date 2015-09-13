@@ -1,0 +1,14 @@
+- name: Is node already installed?
+  shell: command -v node
+  register: node_installed_check
+  ignore_errors: yes
+  changed_when: False
+
+- include: ../../from_source.yml
+  vars:
+    proper_name: NodeJS
+    binary_url: http://nodejs.org/dist/node-latest.tar.gz
+    binary_name: node
+  when: node_installed_check.rc != 0
+
+

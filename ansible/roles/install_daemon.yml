@@ -1,0 +1,7 @@
+- name: Install {{daemon_name}}
+  yum: name={{daemon_package}} state=present enablerepo=remi,epel
+  sudo: yes
+
+- name: Start {{daemon_name}} and Start on Boot
+  service: name={{daemon_service}} state=started enabled=yes
+  sudo: yes

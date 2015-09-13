@@ -1,0 +1,10 @@
+- name: Is babel ES6 support already installed?
+  shell: command -v babel-node
+  register: babel_installed_check
+  changed_when: False
+  ignore_errors: yes
+
+- name: Install Babel ES6 support
+  shell: /usr/local/bin/npm i -g babel
+  sudo: yes
+  when: babel_installed_check.rc != 0

@@ -1,0 +1,8 @@
+- name: Install the haskell Repo
+  yum: name=http://sherkin.justhub.org/el6/RPMS/x86_64/justhub-release-2.0-4.0.el6.x86_64.rpm state=present
+  sudo: yes
+
+- name: Install Haskell
+  yum: name=haskell state=present
+  sudo: yes
+

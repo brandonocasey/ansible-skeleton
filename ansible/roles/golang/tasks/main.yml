@@ -1,0 +1,7 @@
+- name: Install Golang
+  yum: name=golang state=present enablerepo=epel
+  sudo: yes
+
+- name: Install Golang hg
+  yum: name=hg state=present enablerepo=epel
+  sudo: yes

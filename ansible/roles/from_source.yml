@@ -1,0 +1,35 @@
+- name: Remove the old build root
+  file: path=/tmp/build_root state=absent
+  sudo: yes
+
+- name: Create a directory for {{proper_name}}
+  file: path=/tmp/build_root state=directory
+  sudo: yes
+
+- name: Download {{proper_name}} Binaries
+  get_url: url={{binary_url}} dest=/tmp/build_root/{{binary_name}}.tar.gz
+  sudo: yes
+
+- name: Extract {{proper_name}}
+  unarchive: src=/tmp/build_root/{{binary_name}}.tar.gz dest=/tmp/build_root/ copy=false
+  sudo: yes
+
+- name: Remove tarball for {{proper_name}}
+  file: path=/tmp/build_root/{{binary_name}}.tar.gz state=absent
+  sudo: yes
+
+- name: Configure {{proper_name}}
+  shell: cd /tmp/build_root/{{binary_name}}* && ./configure
+  sudo: yes
+
+- name: Make {{proper_name}}
+  shell: cd /tmp/build_root/{{binary_name}}* && make
+  sudo: yes
+
+- name: Make Install {{proper_name}}
+  shell: cd /tmp/build_root/{{binary_name}}* && make install
+  sudo: yes
+
+- name: Cleanup {{proper_name}}
+  shell: rm -rf /tmp/build_root
+  sudo: yes

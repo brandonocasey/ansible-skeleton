@@ -1,0 +1,3 @@
+- name: Install Erlang
+  yum: name=erlang state=present enablerepo=epel
+  sudo: yes

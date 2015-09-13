@@ -1,0 +1,19 @@
+- hosts: all
+  roles:
+    - common
+    - nodejs
+      # - meteor
+      # - es6
+      # - sails
+      # - mysql
+      # - nginx
+      # - golang
+      # - erlang
+      # - haskell
+      # - php
+    - vim
+      # - apache
+      # - postgres
+      # - redis
+    - dotfiles
+    - project

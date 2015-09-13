@@ -1,0 +1,29 @@
+- name: Check if Postgres is installed
+  ignore_errors: yes
+  command: test -f /usr/bin/psql
+  register: postgres_install_check
+
+- name: Install Postgres Repo
+  yum: name=http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-centos94-9.4-1.noarch.rpm state="present"
+  sudo: yes
+  when: postgres_install_check.rc != 0
+
+- name: Install Postgres
+  yum: name=postgresql94-server state=present
+  sudo: yes
+  when: postgres_install_check.rc != 0
+
+- name: Create Postgres Database
+  shell: service postgresql-9.4 initdb
+  sudo: yes
+  when: postgres_install_check.rc != 0
+
+- name: Start Postgres
+  service: name=postgresql-9.4 state=started
+  sudo: yes
+  when: postgres_install_check.rc != 0
+
+- name: Start Postgres at startup
+  command: chkconfig postgresql-9.4 on
+  sudo: yes
+  when: postgres_install_check.rc != 0

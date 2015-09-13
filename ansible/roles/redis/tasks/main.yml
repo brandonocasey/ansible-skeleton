@@ -1,0 +1,5 @@
+- include: ../../install_daemon.yml
+  vars:
+    daemon_name: Redis
+    daemon_service: redis
+    daemon_package: redis

@@ -1,0 +1,19 @@
+- name: Install PHP
+  yum: name=php56 state=present enablerepo=remi
+  sudo: yes
+
+- name: Check composer
+  command: test -f /usr/local/bin/composer
+  sudo: yes
+  ignore_errors: yes
+  register: composer_check
+
+- name: Install Composer
+  shell: curl -sS https://getcomposer.org/installer | php56
+  sudo: yes
+  when: composer_check.rc != 0
+
+- name: Move Composer to Global Dir
+  shell: mv composer.phar /usr/local/bin/composer
+  sudo: yes
+  when: composer_check.rc != 0

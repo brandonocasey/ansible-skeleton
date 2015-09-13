@@ -1,0 +1,24 @@
+- name: Is vim already installed?
+  shell: command -v vim
+  register: vim_installed_check
+  ignore_errors: yes
+  changed_when: False
+
+- name: Install ncurses for vim install
+  sudo: yes
+  yum: name=ncurses state=present
+  when: vim_installed_check.rc != 0
+
+- name: Install ncurses-devel for vim install
+  sudo: yes
+  yum: name=ncurses-devel state=present
+  when: vim_installed_check.rc != 0
+
+
+- include: ../../from_source.yml
+  vars:
+    proper_name: Vim
+    binary_url: ftp://ftp.vim.org/pub/vim/unix/vim-7.4.tar.bz2
+    binary_name: vim
+  when: vim_installed_check.rc != 0
+

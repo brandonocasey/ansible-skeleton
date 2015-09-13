@@ -1,0 +1,5 @@
+- include: ../../install_daemon.yml
+  vars:
+    daemon_name: Apache
+    daemon_service: httpd
+    daemon_package: httpd

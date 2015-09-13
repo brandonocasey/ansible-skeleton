@@ -1,0 +1,5 @@
+- include: ../../install_daemon.yml
+  vars:
+    daemon_name: MySQL
+    daemon_service: mysqld
+    daemon_package: mysql-server

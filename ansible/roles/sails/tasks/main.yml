@@ -1,0 +1,22 @@
+- name: Is sails already installed?
+  shell: command -v sails
+  register: sails_installed_check
+  ignore_errors: yes
+  changed_when: False
+
+- name: Install sails
+  shell: /usr/local/bin/npm i -g sails
+  sudo: yes
+  when: sails_installed_check.rc != 0
+
+- name: Is grunt-cli already installed?
+  shell: command -v grunt
+  register: grunt_installed_check
+  ignore_errors: yes
+  changed_when: False
+
+- name: Install grunt
+  shell: /usr/local/bin/npm i -g grunt-cli
+  sudo: yes
+  when: grunt_installed_check.rc != 0
+
